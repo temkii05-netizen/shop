@@ -1,1 +1,827 @@
-# shop
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iPhone Shope</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f7;
+      color: #111;
+    }
+
+    header {
+      background: #000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 36px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    header h1:hover {
+      color: #0071e3;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .controls input {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      width: 300px;
+      font-size: 16px;
+    }
+
+    .range-box {
+      background: #f5f5f7;
+      padding: 15px;
+      border-radius: 15px;
+      min-width: 280px;
+    }
+
+    .range-box label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .range-box input[type="range"] {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .price-value {
+      color: #0071e3;
+    }
+
+    
+
+    
+
+    .controls input,
+    .controls select {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      min-width: 220px;
+      font-size: 16px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      padding: 30px;
+      max-width: 1600px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #fff;
+      display: block;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0071e3;
+      margin-bottom: 15px;
+    }
+
+    .specs {
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .specs span {
+      font-weight: bold;
+    }
+
+    .reviews {
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .review {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .review:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .cart-button {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #0071e3;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 50px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+
+    .add-cart {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      border: none;
+      background: black;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .add-cart:hover {
+      background: #0071e3;
+    }
+
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 400px;
+      height: 100%;
+      background: white;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+      transition: 0.4s;
+      z-index: 1000;
+      padding: 25px;
+      overflow-y: auto;
+    }
+
+    .cart-modal.active {
+      right: 0;
+    }
+
+    .cart-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-total {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      background: #0071e3;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .order-form {
+      margin-top: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-form input,
+    .order-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    .submit-order {
+      padding: 14px;
+      border: none;
+      background: black;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .success-message {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+
+    .close-cart {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #111;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .contacts {
+      background: white;
+      margin: 30px auto;
+      max-width: 1200px;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .contacts h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .contacts p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .products {
+        grid-template-columns: 1fr;
+      }
+      header h1 {
+        font-size: 26px;
+      }
+
+      .card img {
+        aspect-ratio: 16 / 9;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="reloadPage">iPhone Shope</h1>
+  <p>Шоу рум  iPhone</p>
+</header>
+
+
+<section class="controls">
+  <div class="range-box">
+    <label>
+      Цена от:
+      <span class="price-value" id="minPriceValue">0 ₽</span>
+    </label>
+
+    <input type="range" id="minPriceRange" min="0" max="250000" step="10000" value="0">
+
+    <label>
+      Цена до:
+      <span class="price-value" id="maxPriceValue">180 000 ₽</span>
+    </label>
+
+    <input type="range" id="maxPriceRange" min="0" max="250000" step="10000" value="250000">
+  </div>
+</section>
+
+<section class="products" id="productsContainer">
+
+  <div class="card" data-name="iphone 15 pro max" data-series="15" data-price="99999">
+    <img src="https://mobilecity59.ru/upload/iblock/147/4wk54y3r9iw1013i0vrh7fu1altmz1sy.png" alt="iPhone 15 Pro Max">
+
+    <div class="card-content">
+      <h2>iPhone 15 Pro Max</h2>
+      <div class="price">99 999 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.7 OLED</p>
+        <p><span>Процессор:</span> A17 Pro</p>
+        <p><span>Камера:</span> 48 MP</p>
+        <p><span>Память:</span> 256gb</p>
+        <p><span>Батарея:</span> 4441 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐ — неплохая мобила
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — четкая камера и батарея
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 15 pro" data-series="15" data-price="88888">
+    <img src="https://pcdn.goldapple.ru/p/p/19000217335/web/696d674d61696e5064708ddc56020c1ad70.jpg" alt="iPhone 15 Pro">
+
+    <div class="card-content">
+      <h2>iPhone 15 Pro</h2>
+      <div class="price">88 888 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED ProMotion</p>
+        <p><span>Процессор:</span> A17 Pro</p>
+        <p><span>Камера:</span> 48 MP</p>
+        <p><span>Память:</span> 512GB</p>
+        <p><span>Батарея:</span> 3650 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — прошки моя любовь
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 15" data-series="15" data-price="80000">
+    <img src="https://avatars.mds.yandex.net/get-mpic/12444182/2a0000019acad486aa6adfa3d312a3a43c68/orig" alt="iPhone 15">
+
+    <div class="card-content">
+      <h2>iPhone 15</h2>
+      <div class="price">80 000 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED</p>
+        <p><span>Процессор:</span> A16 Bionic</p>
+        <p><span>Камера:</span> 48 MP</p>
+        <p><span>Память:</span> 512GB</p>
+        <p><span>Батарея:</span> 3877 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — Очень быстрый и стильный.
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — удобно лежит в руке
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 14 pro" data-series="14" data-price="67777">
+    <img src="https://avatars.mds.yandex.net/i?id=50ac7ae52dc0af8059ac6f6449adcb8c099f9572-3193964-images-thumbs&n=13" alt="iPhone 14 Pro">
+
+    <div class="card-content">
+      <h2>iPhone 14 Pro</h2>
+      <div class="price">67 777 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED</p>
+        <p><span>Процессор:</span> A16 Bionic</p>
+        <p><span>Камера:</span> 48 MP</p>
+        <p><span>Память:</span> 512GB</p>
+        <p><span>Батарея:</span> 3200 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — Dynamic Island удобный
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — лучший магазин
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 14 pro max" data-series="14" data-price="69999">
+    <img src="https://stores-apple.com/upload/blog/comment/titles/12-02-2025/48_14_Pro_Max_ProRAW_12_02_3.png" alt="iPhone 14 Pro Max">
+
+    <div class="card-content">
+      <h2>iPhone 14 Pro Max</h2>
+      <div class="price">69 999 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.7 OLED</p>
+        <p><span>Процессор:</span> A16 Bionic</p>
+        <p><span>Камера:</span> 48 MP</p>
+        <p><span>Память:</span> 1TB</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">⭐⭐⭐⭐⭐ — большой экран и быстрый экран
+            <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 13 pro" data-series="13" data-price="57777">
+    <img src="https://main-cdn.sbermegamarket.ru/big1/hlr-system/249/290/967/915/103/100029275883b0.jpg" alt="iPhone 13 Pro">
+
+    <div class="card-content">
+      <h2>iPhone 13 Pro</h2>
+      <div class="price">57 777 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED 120Hz</p>
+        <p><span>Процессор:</span> A15 Bionic</p>
+        <p><span>Камера:</span> 12 MP Pro</p>
+        <p><span>Память:</span> 512GB</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">☆☆☆☆☆ — не оправдал ожиданий
+            <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 13 pro max" data-series="13" data-price="59999">
+    <img src="https://i.ytimg.com/vi/ae17l8iNdtM/maxresdefault.jpg" alt="iPhone 13 Pro Max">
+
+    <div class="card-content">
+      <h2>iPhone 13 Pro Max</h2>
+      <div class="price">59 999 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.7 OLED 120Hz</p>
+        <p><span>Процессор:</span> A15 Bionic</p>
+        <p><span>Камера:</span> 12 MP Pro</p>
+        <p><span>Память:</span> 1TB</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">⭐⭐⭐⭐⭐ — ну пойдет
+            <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 13" data-series="13" data-price="54444">
+    <img src="https://i.ytimg.com/vi/nyzDCKFOWoY/maxresdefault.jpg" alt="iPhone 13">
+
+    <div class="card-content">
+      <h2>iPhone 13</h2>
+      <div class="price">54 444 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED</p>
+        <p><span>Процессор:</span> A15 Bionic</p>
+        <p><span>Камера:</span> 12 MP</p>
+        <p><span>Память:</span> 256GB</p>
+        <p><span>Батарея:</span> 3240 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — Отличная автономность
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — Хорошая цена
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 12" data-series="12" data-price="39000">
+    <img src="https://avatars.mds.yandex.net/get-marketpic/5961732/pic611226cab153bb58fbebc2680a1fa7c4/orig" alt="iPhone 12">
+
+    <div class="card-content">
+      <h2>iPhone 12</h2>
+      <div class="price">39 900 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 OLED</p>
+        <p><span>Процессор:</span> A14 Bionic</p>
+        <p><span>Камера:</span> 12 MP</p>
+        <p><span>Память:</span> 128GB</p>
+        <p><span>Батарея:</span> 2815 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐☆ — достаточно быстрый телефон
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — хороший OLED экран
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 11" data-series="11" data-price="33900">
+    <img src="https://avatars.mds.yandex.net/get-marketpic/12827044/picc012e484a6b94bb7576bc054142ab8e2/orig" alt="iPhone 11">
+
+    <div class="card-content">
+      <h2>iPhone 11</h2>
+      <div class="price">33 900 ₽</div>
+
+      <div class="specs">
+        <p><span>Экран:</span> 6.1 Liquid Retina</p>
+        <p><span>Процессор:</span> A13 Bionic</p>
+        <p><span>Камера:</span> 12 MP</p>
+        <p><span>Память:</span> 128GB</p>
+        <p><span>Батарея:</span> 3110 mAh</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐☆ — хороший дешевый вариант
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — хорошая камера для старечка
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone se 2022" data-series="SE" data-price="77900">
+    <img src="https://cdn.mos.cms.futurecdn.net/LyULvysJAM7xj2oUaL37MA.jpg" alt="iPhone SE">
+    <div class="card-content">
+      <h2>iPhone SE 2022</h2>
+      <div class="price">77 900 ₽</div>
+      <div class="specs">
+        <p><span>Экран:</span> 4.7 Retina</p>
+        <p><span>Процессор:</span> A15 Bionic</p>
+        <p><span>Камера:</span> 12 MP</p>
+        <p><span>Память:</span> 128GB</p>
+      </div>
+      <div class="reviews">
+        <div class="review">⭐⭐⭐⭐☆ — хороший олд
+            <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="iphone 16 pro max" data-series="16" data-price="111111">
+    <img src="https://avatars.mds.yandex.net/get-market-ugc/13077424/64C1B6CA-204A-441E-BFDF-E615380D0CDE.JPG/orig" alt="iPhone 16 Pro Max">
+    <div class="card-content">
+      <h2>iPhone 16 Pro Max</h2>
+      <div class="price">111 111 ₽</div>
+      <div class="specs">
+        <p><span>Экран:</span> 6.9 OLED</p>
+        <p><span>Процессор:</span> A18 Pro</p>
+        <p><span>Камера:</span> 64 MP</p>
+        <p><span>Память:</span> 1TB</p>
+      </div>
+      <div class="reviews">
+        <div class="review">⭐⭐⭐⭐⭐ — хороший новый телефон
+            <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="products">
+
+  <div class="card" data-name="apple usb-c cable" data-series="accessory" data-price="3900">
+    <img src="https://avatars.mds.yandex.net/get-mpic/12300570/2a000001945a7334bf6b2ed68fbd22bef096/orig" alt="USB-C Cable">
+
+    <div class="card-content">
+      <h2>Apple USB‑C Cable</h2>
+      <div class="price">3 900 ₽</div>
+
+      <div class="specs">
+        <p><span>Тип:</span> USB‑C</p>
+        <p><span>Длина:</span> 1 метр</p>
+        <p><span>Совместимость:</span> iPhone 15</p>
+        <p><span>Материал:</span> Усилённая оплётка</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — ориг кабель
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — гуд
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-name="apple power adapter" data-series="accessory" data-price="5900">
+    <img src="https://avatars.mds.yandex.net/get-mpic/5165418/2a0000018b80286ed796b140c3e7fa7b49b3/orig" alt="Power Adapter">
+
+    <div class="card-content">
+      <h2>Apple 20W Power Adapter</h2>
+      <div class="price">5 900 ₽</div>
+
+      <div class="specs">
+        <p><span>Мощность:</span> 20W</p>
+        <p><span>Разъём:</span> USB‑C</p>
+        <p><span>Поддержка:</span> Fast Charge</p>
+        <p><span>Совместимость:</span> Все iPhone</p>
+      </div>
+
+      <div class="reviews">
+        <div class="review">
+          ⭐⭐⭐⭐⭐ — есть быстрая зарядка
+        </div>
+
+        <div class="review">
+          ⭐⭐⭐⭐☆ — удобно брать с собой в любые поездки
+        <button class="add-cart">Добавить в корзину</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<button class="cart-button" id="cartButton">🛒 Корзина (<span id="cartCount">0</span>)</button>
+
+<div class="cart-modal" id="cartModal">
+  <h2>Корзина</h2>
+
+  <div id="cartItems"></div>
+
+  <div class="cart-total">
+    Итого: <span id="cartTotal">0 ₽</span>
+  </div>
+
+  <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+
+  <form class="order-form" id="orderForm">
+    <input type="text" placeholder="Ваше имя" required>
+    <input type="tel" placeholder="Телефон" required>
+    <textarea placeholder="Адрес доставки" rows="4" required></textarea>
+
+    <button type="submit" class="submit-order">Подтвердить заказ</button>
+  </form>
+
+  <div class="success-message" id="successMessage">
+    ✅ Супер заказ оформлен!
+  </div>
+
+  <button class="close-cart" id="closeCart">Закрыть</button>
+</div>
+
+<section class="contacts">
+  <h2>О нас</h2>
+  <p>📍 Москва, ул. головинская дом 15</p>
+  <p>📞 +7 (999) 999-99-99</p>
+  <p>📞 +7 (777) 777-77-77</p>
+  <p>✉️ iphoneshop@gmail.ru</p>
+  <p>🕒 Ежедневно с 9:00 до 23:00</p>
+</section>
+
+<footer>
+  <p>© 2026 iPhone Shope. Все права защищены.</p>
+</footer>
+
+<script>
+  const reloadPage = document.getElementById('reloadPage');
+
+  reloadPage.addEventListener('click', () => {
+    location.reload();
+  });
+
+  const minPriceRange = document.getElementById('minPriceRange');
+  const maxPriceRange = document.getElementById('maxPriceRange');
+  const minPriceValue = document.getElementById('minPriceValue');
+  const maxPriceValue = document.getElementById('maxPriceValue');
+  const cards = document.querySelectorAll('.card');
+
+  function filterProducts() {
+    let minPrice = parseInt(minPriceRange.value);
+    let maxPrice = parseInt(maxPriceRange.value);
+
+    if (minPrice > maxPrice) {
+      [minPrice, maxPrice] = [maxPrice, minPrice];
+    }
+
+    minPriceValue.textContent = minPrice.toLocaleString('ru-RU') + ' ₽';
+    maxPriceValue.textContent = maxPrice.toLocaleString('ru-RU') + ' ₽';
+
+    cards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const price = parseInt(card.dataset.price);
+
+      const matchesPrice = price >= minPrice && price <= maxPrice;
+
+      card.style.display = matchesPrice ? 'block' : 'none';
+    });
+  }
+
+  minPriceRange.addEventListener('input', filterProducts);
+  maxPriceRange.addEventListener('input', filterProducts);
+
+  const cartButton = document.getElementById('cartButton');
+  const cartModal = document.getElementById('cartModal');
+  const closeCart = document.getElementById('closeCart');
+  const cartItems = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartCount = document.getElementById('cartCount');
+  const addCartButtons = document.querySelectorAll('.add-cart');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const orderForm = document.getElementById('orderForm');
+  const successMessage = document.getElementById('successMessage');
+
+  let total = 0;
+  let count = 0;
+
+  cartButton.addEventListener('click', () => {
+    cartModal.classList.add('active');
+  });
+
+  closeCart.addEventListener('click', () => {
+    cartModal.classList.remove('active');
+  });
+
+  checkoutBtn.addEventListener('click', () => {
+    orderForm.style.display = 'flex';
+  });
+
+  orderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    successMessage.style.display = 'block';
+    orderForm.reset();
+  });
+
+  addCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.card');
+      const title = card.querySelector('h2').textContent;
+      const priceText = card.querySelector('.price').textContent;
+      const numericPrice = parseInt(card.dataset.price);
+
+      const item = document.createElement('div');
+      item.classList.add('cart-item');
+      item.innerHTML = `<strong>${title}</strong><br>${priceText}`;
+
+      cartItems.appendChild(item);
+
+      total += numericPrice;
+      count += 1;
+
+      cartTotal.textContent = total.toLocaleString('ru-RU') + ' ₽';
+      cartCount.textContent = count;
+    });
+  });
+</script>
+
+</body>
+</html># shop
